@@ -134,14 +134,17 @@ with (sd.serendipity(1920,1080) as engine):
     paddle1 = engine.spawn(paddlePlayer,pos=(50,540),active=False)
     paddle2 = engine.spawn(paddleAi,pos=(1870,540),active=False)
     activeBall = engine.spawn(ball,pos=(960,540),active=False)
-    playButton = engine.spawn(sd.button,pos=(960,700),size=(100,50),text="Play",offColor=(90,90,90))
-    hardButton = engine.spawn(sd.button,pos=(960,750),size=(100,50),text="Hard",offColor=(90,90,90))
-    predictButton = engine.spawn(sd.button,pos=(960,800),size=(100,50),text="Predictive \n ai",offColor=(90,90,90))
-    altButton = engine.spawn(sd.button,pos=(860,700),size=(100,50),text=("mouse \n ctrls"),offColor=(90,90,90))
+
+    playButton = engine.spawn(sd.button,pos=(960,700),size=(200,100),text="Play",offColor=(90,90,90))
+    hardButton = engine.spawn(sd.button,pos=(960,800),size=(200,100),text="Hard",offColor=(90,90,90))
+    predictButton = engine.spawn(sd.button,pos=(960,900),size=(200,100),text="Predictive \n ai",offColor=(90,90,90))
+    altButton = engine.spawn(sd.button,pos=(760,700),size=(200,100),text=("mouse \n ctrls"),offColor=(90,90,90))
+
     splashImage = engine.spawn(sd.sprite,pos=(960,150),size=2.5,source="assets/sprites/splash.png")
     score = engine.spawn(sd.text,(engine.windowX/2,180),72,"0 : 0",visible=False)
     textTimer = sd.timer(3000)
     resetTimer = sd.timer(500)
+
     playerScore = 0
     aiScore = 0
     paddleSpeed = 1000
@@ -175,9 +178,14 @@ with (sd.serendipity(1920,1080) as engine):
             textTimer.start()
             playButton.visible = True
             hardButton.visible = True
+            altButton.visible = True
             predictButton.visible = True
             score.visible = False
             resetTimer = sd.timer(500)
+            impossibleMode = False
+            predictBall = False
+            altControls = False
+
 
         if textTimer.update(): playButton.visible = True; score.text = "0 : 0"; splashImage.visible = True
         if resetTimer.update():

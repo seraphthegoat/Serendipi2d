@@ -83,8 +83,23 @@ class collider():
         if collisionTest(self,otherObj,vRel) is None:
             return None
         return result
-class anim(): # self descriptive
-    pass
+class anim():
+    def __init__(self,engine,pos,res,speed,source, visible=True):
+        self.visible = visible
+        self.source = source
+        self.spriteSheet = pygame.image.load(self.source)
+        self.res = vec2(res[0],res[1])
+        self.speed = speed*10
+        self.activeFrame = 0
+        self.currentFrame = 0
+        self.pos = vec2(pos[0],pos[1])
+        self.frames = self.spriteSheet.get_width() // (self.res.x + 1)
+        self.imageRect = pygame.Rect(self.pos.x,self.pos.y,self.res.x,self.res.y)
+    def update(self,screen):
+        if self.visible:
+            self.frame = pygame.Rect(((self.currentFrame // self.speed) % self.frames) * (self.res.x + 1), 0, self.res.x, self.res.y)
+            self.currentFrame += 1
+            screen.blit(self.spriteSheet,self.imageRect,self.frame)
 class sprite(): # self descriptive
     def __init__(self,engine, pos,size,source,visible=True):
         self.source = source
@@ -190,11 +205,13 @@ class button(gameObject):
         self.startPos = pos
         self.activeColor = activeColor
         self.offColor = offColor
+
         topLeft = (pos[0] - self.size[0] / 2, pos[1] - self.size[1] / 2)
         self.rect = pygame.Rect(topLeft[0],topLeft[1],size[0],size[1])
-
         self.fontSize = 72
 
+        self.font = pygame.font.Font(None,self.fontSize)
+        self.textSurface = self.font.render(self.text,True,(255,255,255))
         while True:
             testFont = pygame.font.Font(None,self.fontSize+2)
             testSurface = testFont.render(self.text,True,(255,255,255))
@@ -293,7 +310,6 @@ class text:
             screen.blit(self.textSurface,self.textSurface.get_rect(center=self.position))
     def reset(self):
         self.position = self.startPos
-
 class serendipity(): # engine, call this on use!!
     def __init__(self, windowX,windowY):
 
